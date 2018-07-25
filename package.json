@@ -3,12 +3,16 @@
   "version": "1.0.0",
   "description": "Code Test",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "parcel app/public/index.html",
+    "build": "parcel build app/public/index.html --public-url ./"
   },
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/underscoredotspace/fc-code-test.git"
   },
   "author": "Colin Tindle <ampersand@underscore.space>",
-  "license": "CC-BY-4.0"
+  "license": "CC-BY-4.0",
+  "dependencies": {
+    "parcel": "^1.9.7"
+  }
 }
