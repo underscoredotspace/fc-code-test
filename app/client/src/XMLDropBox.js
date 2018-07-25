@@ -20,7 +20,6 @@ export default class XMLDropBox {
     if (this.active) return
     this.dropbox.classList.add('active')
     this.active = true
-    console.log('entered')
   }
 
   dragLeave(event) {
@@ -28,7 +27,6 @@ export default class XMLDropBox {
     if (!this.active) return
     this.dropbox.classList.remove('active')
     this.active = false
-    console.log('left with no drop')
   }
 
   dragPreventDefault(event) {
@@ -41,7 +39,6 @@ export default class XMLDropBox {
     if (!this.active) return
     this.dropbox.classList.remove('active')
     this.active = false
-    console.log('left with drop')
 
     const dataTransfer = event.dataTransfer
     const files = dataTransfer.files
@@ -50,17 +47,25 @@ export default class XMLDropBox {
   }
 
   handleFileUpload(files) {
-    for (const file of files) {
-      if (file.type !== 'text/xml') continue
+    const filesArray = Array.from(files).filter(
+      file => file.type === 'text/xml'
+    )
 
-      const reader = new FileReader()
+    const requests = filesArray.map(file => {
+      return new Promise(resolve => {
+        const reader = new FileReader()
 
-      reader.onload = (file => event => {
-        const xml = event.target.result
-        this.handleFile(file.name, xml)
-      })(file)
+        reader.onload = (file => event => {
+          const xml = event.target.result
+          resolve(this.handleFile(file.name, xml))
+        })(file)
 
-      reader.readAsText(file)
-    }
+        reader.readAsText(file)
+      })
+    })
+
+    Promise.all(requests).then(res => {
+      console.log(res)
+    })
   }
 }
