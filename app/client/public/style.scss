@@ -1,0 +1,8 @@
+.xml-dropbox {
+  display: inline-block;
+  padding: 2rem 3rem;
+  &.active {
+    background-color: peachpuff;
+    color: hotpink;
+  }
+}
