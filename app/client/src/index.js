@@ -1,8 +1,13 @@
-import XMLDropBox from './XMLDropBox'
+import FileDropBox from './FileDropBox'
 
-new XMLDropBox(document.querySelector('.xml-dropbox'), handleXMLPost)
+new FileDropBox(
+  document.querySelector('.xml-dropbox'),
+  ['text/xml'],
+  doXMLPost,
+  handleXMLPostComplete
+)
 
-function handleXMLPost(fileName, fileData) {
+function doXMLPost(fileName, fileData) {
   const options = {
     method: 'POST',
     headers: {
@@ -13,4 +18,8 @@ function handleXMLPost(fileName, fileData) {
   return fetch('/xml-to-json', options)
     .then(res => res.json())
     .then(json => ({ fileName, json }))
+}
+
+function handleXMLPostComplete(responses) {
+  console.log(responses)
 }

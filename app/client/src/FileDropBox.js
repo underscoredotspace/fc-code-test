@@ -1,40 +1,39 @@
-export default class XMLDropBox {
-  constructor(target, handleFile) {
+export default class FileDropBox {
+  constructor(target, fileTypes, doFileAction, handleFileActionComplete) {
     this.dropbox = target
-    this.handleFile = handleFile
-    this.active = false
     if (!this.dropbox) throw new Error('target element must exist')
+    this.fileTypes = fileTypes
+    this.doFileAction = doFileAction
+    this.handleFileActionComplete = handleFileActionComplete
 
-    this.drop = this.drop.bind(this)
-    this.dragEnter = this.dragEnter.bind(this)
-    this.dragLeave = this.dragLeave.bind(this)
+    this.active = false
 
-    this.dropbox.addEventListener('dragenter', this.dragEnter, false)
-    this.dropbox.addEventListener('dragover', this.dragEnter, false)
+    this.dropbox.addEventListener('dragenter', this.dragEnterOver, false)
+    this.dropbox.addEventListener('dragover', this.dragEnterOver, false)
     this.dropbox.addEventListener('dragleave', this.dragLeave, false)
     this.dropbox.addEventListener('drop', this.drop, false)
   }
 
-  dragEnter(event) {
+  dragEnterOver = event => {
     this.dragPreventDefault(event)
     if (this.active) return
     this.dropbox.classList.add('active')
     this.active = true
   }
 
-  dragLeave(event) {
+  dragLeave = event => {
     this.dragPreventDefault(event)
     if (!this.active) return
     this.dropbox.classList.remove('active')
     this.active = false
   }
 
-  dragPreventDefault(event) {
+  dragPreventDefault = event => {
     event.preventDefault()
     event.stopPropagation()
   }
 
-  drop(event) {
+  drop = event => {
     this.dragPreventDefault(event)
     if (!this.active) return
     this.dropbox.classList.remove('active')
@@ -46,9 +45,9 @@ export default class XMLDropBox {
     this.handleFileUpload(files)
   }
 
-  handleFileUpload(files) {
-    const filesArray = Array.from(files).filter(
-      file => file.type === 'text/xml'
+  handleFileUpload = files => {
+    const filesArray = Array.from(files).filter(file =>
+      this.fileTypes.includes(file.type)
     )
 
     const requests = filesArray.map(file => {
@@ -57,15 +56,13 @@ export default class XMLDropBox {
 
         reader.onload = (file => event => {
           const xml = event.target.result
-          resolve(this.handleFile(file.name, xml))
+          resolve(this.doFileAction(file.name, xml))
         })(file)
 
         reader.readAsText(file)
       })
     })
 
-    Promise.all(requests).then(res => {
-      console.log(res)
-    })
+    Promise.all(requests).then(this.handleFileActionComplete)
   }
 }
