@@ -15,7 +15,7 @@ app.post('/xml-to-json', xmlBodyParser, (req, res) => {
     // artificial delay
     setTimeout(() => {
       res.status(200).json(json)
-    }, 1500)
+    }, Math.random() * 1500)
   })
 })
 
