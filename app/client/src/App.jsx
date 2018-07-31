@@ -22,7 +22,7 @@ export default class App extends Component {
     console.log(`${responses.length} files uploaded`)
   }
 
-  selectItem(id) {
+  loadFile(id) {
     fetch(`/file/${id}`)
       .then(res => res.json())
       .then(json => {
@@ -38,7 +38,7 @@ export default class App extends Component {
           dropAction={this.doXMLPost}
           dropComplete={this.handleXMLPostComplete}
         />
-        <UploadList selectItem={this.selectItem} />
+        <UploadList loadFile={this.loadFile} />
       </div>
     )
   }

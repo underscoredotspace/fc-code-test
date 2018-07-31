@@ -5,6 +5,7 @@ const io = require('socket.io')(server)
 const bodyParser = require('body-parser')
 const parseString = require('xml2js').parseString
 const mongodb = require('./db')
+const oid = require('mongodb').ObjectID
 
 io.on('connection', socket => {
   socket.on('disconnect', () => {
@@ -22,20 +23,32 @@ app.post('/:filename', xmlBodyParser, (req, res) => {
       return res.status(500).send(error.toString())
     }
 
+    const fileName = req.params.filename
+
     mongodb((error, db) => {
       if (error) throw new Error(error)
 
+      const record = Object.assign(
+        {
+          date: new Date().valueOf(),
+          fileName
+        },
+        ddReturnJson
+      )
+
       db.collection('dd-returns')
-        .insertOne(ddReturnJson)
+        .insertOne(record)
         .then(records => {
           io.emit('new-upload', {
-            fileName: req.params.filename,
+            fileName,
+            date: record.date,
             id: records.insertedId
           })
         })
         .catch(error => {
           io.emit('failed-upload', {
-            fileName: req.params.filename, error
+            fileName: req.params.filename,
+            error
           })
         })
     })
@@ -45,7 +58,13 @@ app.post('/:filename', xmlBodyParser, (req, res) => {
 })
 
 app.get('/file/:id', (req, res) => {
-  res.json({ id: req.id })
+  mongodb((error, db) => {
+    db.collection('dd-returns')
+      .findOne({ _id: oid(req.params.id) })
+      .then(result => {
+        res.json(result)
+      })
+  })
 })
 
 server.listen(3000, () => {
