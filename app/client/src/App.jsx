@@ -30,6 +30,26 @@ export default class App extends Component {
       })
   }
 
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      loaded: false,
+      files: []
+    }
+
+    fetch('/file/all')
+      .then(res => res.json())
+      .then(allFiles => {
+        const files = allFiles.map(file => {
+          const { fileName, date } = file
+          return { id: file._id, fileName, date }
+        })
+
+        this.setState({ files,loaded:true })
+      })
+  }
+
   render() {
     return (
       <div>
@@ -38,7 +58,9 @@ export default class App extends Component {
           dropAction={this.doXMLPost}
           dropComplete={this.handleXMLPostComplete}
         />
-        <UploadList loadFile={this.loadFile} />
+        {this.state.loaded ? (
+          <UploadList files={this.state.files} loadFile={this.loadFile} />
+        ) : null}
       </div>
     )
   }

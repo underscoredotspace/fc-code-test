@@ -36,7 +36,7 @@ app.post('/:filename', xmlBodyParser, (req, res) => {
         ddReturnJson
       )
 
-      db.collection('dd-returns')
+      db.collection('dd-return-files')
         .insertOne(record)
         .then(records => {
           io.emit('new-upload', {
@@ -57,9 +57,23 @@ app.post('/:filename', xmlBodyParser, (req, res) => {
   })
 })
 
+app.get('/file/all', (req, res) => {
+  mongodb((error, db) => {
+    db.collection('dd-return-files')
+      .find().toArray()
+      .then(result => {
+        res.json(result)
+      }).catch(error => {
+        res.status(500).json(error)
+      })
+  })
+})
+
 app.get('/file/:id', (req, res) => {
   mongodb((error, db) => {
-    db.collection('dd-returns')
+    if (error) throw new Error(error)
+
+    db.collection('dd-return-files')
       .findOne({ _id: oid(req.params.id) })
       .then(result => {
         res.json(result)

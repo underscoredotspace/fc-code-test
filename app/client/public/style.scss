@@ -8,3 +8,8 @@
     color: hotpink;
   }
 }
+
+.upload-list {
+  display: flex;
+  flex-direction: column-reverse;
+}

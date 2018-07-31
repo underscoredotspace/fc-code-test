@@ -7,7 +7,7 @@ export default class UploadList extends Component {
     super(props)
 
     this.state = {
-      list: []
+      list: this.props.files
     }
 
     const io = socketio()
@@ -31,7 +31,7 @@ export default class UploadList extends Component {
 
   render() {
     return (
-      <ul>
+      <ul className="upload-list">
         {this.state.list.map(li => (
           <UploadListItem key={li.id} {...li} select={this.select} />
         ))}
