@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import FileDropBox from './FileDropBox'
+import FileDropBox from './components/FileDropBox'
+import UploadList from './components/UploadList'
 
 export default class App extends Component {
   doXMLPost(fileName, fileData) {
@@ -11,16 +12,22 @@ export default class App extends Component {
       },
       body: fileData
     }
-    return fetch('/xml-to-json', options)
-      .then(res => res.json())
-      .then(json => {
-        console.log(`File ${fileName} action complete`)
-        return { fileName, json }
-      })
+    return fetch(`/${fileName}`, options).then(() => {
+      console.log(`File ${fileName} action complete`)
+      return { fileName }
+    })
   }
 
   handleXMLPostComplete(responses) {
     console.log(`${responses.length} files uploaded`)
+  }
+
+  selectItem(id) {
+    fetch(`/file/${id}`)
+      .then(res => res.json())
+      .then(json => {
+        console.log(json)
+      })
   }
 
   render() {
@@ -31,6 +38,7 @@ export default class App extends Component {
           dropAction={this.doXMLPost}
           dropComplete={this.handleXMLPostComplete}
         />
+        <UploadList selectItem={this.selectItem} />
       </div>
     )
   }
