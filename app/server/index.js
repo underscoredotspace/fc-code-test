@@ -18,7 +18,7 @@ app.use(express.static('dist/'))
 
 const xmlBodyParser = bodyParser.text({ type: 'application/xml' })
 app.post('/:filename', xmlBodyParser, (req, res) => {
-  parseString(req.body, { mergeAttrs: true }, (error, ddReturnJson) => {
+  parseString(req.body, { mergeAttrs: true, explicitArray: false }, (error, ddReturnJson) => {
     if (error) {
       return res.status(500).send(error.toString())
     }
