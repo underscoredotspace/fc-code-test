@@ -4,8 +4,9 @@
   "description": "Code Test",
   "scripts": {
     "start": "npm run start:client & npm run start:server",
-    "start:client": "parcel watch app/client/public/index.html",
-    "start:server": "nodemon app/server",
+    "start:dev": "npm run start:client & nodemon app/server",
+    "start:client": "parcel watch --no-hmr app/client/public/index.html",
+    "start:server": "node app/server",
     "build": "parcel build app/public/index.html --public-url ./"
   },
   "repository": {
@@ -22,9 +23,13 @@
   },
   "dependencies": {
     "body-parser": "^1.18.3",
+    "dotenv": "^6.0.0",
     "express": "^4.16.3",
+    "moment": "^2.22.2",
+    "mongodb": "^3.1.1",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
+    "react-moment": "^0.7.9",
     "socket.io": "^2.1.1",
     "xml2js": "^0.4.19"
   },

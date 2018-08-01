@@ -67,7 +67,7 @@ export default class FileDropBox extends Component {
         onDrop={this.drop}
         className={`xml-dropbox ${this.state.active ? 'active' : ''}`}
       >
-        Drop files here
+        Drop new file(s)
       </div>
     )
   }
