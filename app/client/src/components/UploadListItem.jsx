@@ -6,7 +6,7 @@ const UploadListItem = props => {
   return (
     <li>
       <a onClick={e => select(e, id)} href={`/file/${id}`}>
-        {fileName + ' - '}
+        <p className="file-name">{fileName}</p>
         <Moment fromNow date={date} />
       </a>
     </li>

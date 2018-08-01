@@ -14,7 +14,14 @@ const ReturnedDDList = ({ items }) => {
   return (
     <div className="returned-dd-list">
       <h2>Returned Direct Debits</h2>
-
+      {items.length === 0 ? (
+        <p>
+          Select a file or upload a new file by dropping on the "Drop new file"
+          target
+        </p>
+      ) : (
+        ''
+      )}
       {items.map(item => {
         const advice = extractAdvice(item)
         return (
