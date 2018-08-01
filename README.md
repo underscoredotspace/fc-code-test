@@ -19,4 +19,4 @@ The full application is JavaScript, with Node + Express on the backend and React
 - Moment.js + React Moment: time can be messy in JS. 
 - xml2js: first time I've used this library. It has an active GitHub and many users. 
 
-The build is completed with Parcel. I generally chose this for my own projects because it's easy to configure and it comes with SASS + Babel. 
+The build is completed with Parcel. I generally choose this for my own projects because it's easy to configure and it comes with SASS + Babel. 
