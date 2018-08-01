@@ -1,7 +1,8 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import FileDropBox from './components/FileDropBox'
 import UploadList from './components/UploadList'
 import ReturnedDDList from './components/ReturnedDDList'
+import Menu from './components/Menu'
 
 export default class App extends Component {
   constructor(props) {
@@ -44,18 +45,21 @@ export default class App extends Component {
     console.log(`${responses.length} files uploaded`)
   }
 
-  loadFile =(id) =>{
+  loadFile = id => {
     fetch(`/file/${id}`)
       .then(res => res.json())
       .then(json => {
-        this.setState({returnedDDs: [json]})
+        this.setState({ returnedDDs: [json] })
       })
   }
 
-
   render() {
     return (
-      <div>
+      <Fragment>
+        <header>
+          <h1>Money Cloud Dashboard</h1>
+          <Menu />
+        </header>
         <FileDropBox
           filter={['text/xml']}
           dropAction={this.doXMLPost}
@@ -65,7 +69,7 @@ export default class App extends Component {
           <UploadList files={this.state.files} loadFile={this.loadFile} />
         ) : null}
         <ReturnedDDList items={this.state.returnedDDs} />
-      </div>
+      </Fragment>
     )
   }
 }

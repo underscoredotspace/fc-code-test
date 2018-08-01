@@ -1,6 +1,57 @@
+$blue: #005172;
+$green: #48a360;
+
+html {
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+    Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-size: 16px;
+  color: black;
+}
+
+body {
+  margin: 1rem;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+#root {
+  display: grid;
+  grid-template-columns: auto 200px;
+  grid-template-rows: min-content auto;
+  grid-gap: 1rem;
+  height: 100%;
+}
+
+header {
+  grid-column: 1/2;
+  grid-row: 1/1;
+  .menu {
+    list-style: none;
+    display: flex;
+    flex-flow: row nowrap;
+    background-color: $blue;
+    color: white;
+    font-weight: bolder;
+    padding: 0;
+    li {
+      flex: 1;
+      padding: 0.25rem 0.5rem;
+      text-align: center;
+      border: 2px solid white;
+    }
+  }
+}
+
 .xml-dropbox {
-  display: inline-block;
-  padding: 2rem 3rem;
+  grid-column: 2 / 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border: 3px solid silver;
   background-color: azure;
   &.active {
@@ -10,6 +61,42 @@
 }
 
 .upload-list {
+  grid-column: 2 / 3;
   display: flex;
   flex-direction: column-reverse;
+  justify-content: flex-end;
+}
+
+.returned-dd-list {
+  grid-column: 1 / 2;
+  grid-row: 2 / 3;
+
+  table {
+    border-collapse: collapse;
+  }
+
+  td {
+    padding: 0.25rem 0.5rem;
+  }
+
+  thead,
+  tbody {
+    border: 1px solid black;
+  }
+
+  thead {
+    font-weight: bold;
+  }
+
+  tbody tr {
+    background-color: transparentize($green, 0.6);
+  }
+
+  tbody tr:nth-child(even) {
+    background-color: transparentize($blue, 0.6);
+  }
+
+  .amount {
+    text-align: right;
+  }
 }

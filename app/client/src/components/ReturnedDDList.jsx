@@ -11,28 +11,42 @@ function extractAdvice(item) {
 }
 
 const ReturnedDDList = ({ items }) => {
-  if (items.length === 0) return null
-
   return (
-    <div>
+    <div className="returned-dd-list">
+      <h2>Returned Direct Debits</h2>
+
       {items.map(item => {
         const advice = extractAdvice(item)
         return (
           <Fragment key={item._id}>
-            <h2>{advice.account.name}</h2>
+            <h3>{advice.account.name}</h3>
             <table>
-              {advice.returns.map(aReturn => (
+              <thead>
                 <tr>
-                  <td>{aReturn.PayerAccount.name}</td>
-                  <td>{aReturn.PayerAccount.sortCode}</td>
-                  <td>{aReturn.PayerAccount.number}</td>
-                  <td>{aReturn.PayerAccount.ref}</td>
-                  <td>{aReturn.returnDescription}</td>
-                  <td>
-                    {aReturn.valueOf[0]} {aReturn.currency}
-                  </td>
+                  <td className="name">Name</td>
+                  <td className="sort-code">Sort Code</td>
+                  <td className="number">Account</td>
+                  <td className="reference">Reference</td>
+                  <td className="return-desc">Return Desc</td>
+                  <td className="amount">Amount</td>
                 </tr>
-              ))}
+              </thead>
+              <tbody>
+                {advice.returns.map(aReturn => (
+                  <tr key={`${item._id}-${aReturn.PayerAccount.ref}`}>
+                    <td className="name">{aReturn.PayerAccount.name}</td>
+                    <td className="sort-code">
+                      {aReturn.PayerAccount.sortCode}
+                    </td>
+                    <td className="number">{aReturn.PayerAccount.number}</td>
+                    <td className="reference">{aReturn.PayerAccount.ref}</td>
+                    <td className="return-desc">{aReturn.returnDescription}</td>
+                    <td className="amount">
+                      {aReturn.valueOf[0]} {aReturn.currency}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
             </table>
             <p>Processed {moment(item.date).calendar()}</p>
           </Fragment>
